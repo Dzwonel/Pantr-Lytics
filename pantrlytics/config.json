@@ -3,7 +3,7 @@
   "version": "2026.03.30",
   "image": "ghcr.io/Psychman52OS/pantrlytics:latest",
   "slug": "pantrlytics - PL",
-  "description": "PantrLytics inventory app with labels and printing — Supervisor add-on with Ingress",
+  "description": "Aplikacja PantrLytics z etykietami i drukowaniem",
   "url": "https://github.com/Dzwonel/Pantr-Lytics",
   "changelog": "https://github.com/Dzwonel/Pantr-Lytics/blob/main/CHANGELOG.md",
   "logo": "maxwell.gif",

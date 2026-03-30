@@ -1,7 +1,7 @@
 {
   "name": "PantrLytics - PL",
   "version": "2026.03.30",
-  "image": "ghcr.io/pPsychman52OS/pantrlytics:latest",
+  "image": "ghcr.io/Psychman52OS/pantrlytics:latest",
   "slug": "pantrlytics - PL",
   "description": "Aplikacja PantrLytics z etykietami i drukowaniem",
   "url": "https://github.com/Dzwonel/Pantr-Lytics",

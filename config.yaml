@@ -1,9 +1,9 @@
-name: PantrLytics
+name: PantrLytics - PL
 version: 2026.03.28
-url: https://github.com/Psychman52OS/PantrLytics
-changelog: https://github.com/Psychman52OS/PantrLytics/blob/main/CHANGELOG.md
-slug: pantrlytics
-description: Inventory database with on-demand label generation and IPP printing
+url: https://github.com/Dzwonel/Pantr-Lytics
+changelog: https://github.com/Dzwonel/Pantr-Lytics/blob/main/CHANGELOG.md
+slug: pantrlytics - PL
+description: Baza danych z generowaniem etykiet na żądanie i drukowaniem IPP
 arch:
   - aarch64
   - amd64

@@ -1,114 +1,113 @@
-# PantrLytics (Home Assistant add-on)
+# PantrLytics (dodatek do Home Assistant)
 
-Inventory tracker with on-demand label generation and IPP printing. Built for Home Assistant ingress.
+Monitorowanie stanu zapasów z generowaniem etykiet na żądanie i drukowaniem IPP. Stworzony dla Home Assistant Ingress.
 
-License: Personal use only (non-commercial). See LICENSE.
-
----
-
-## Add-on install (Home Assistant)
-
-1) **Add repo**: Supervisor → Add-on Store → “Repositories” → `https://github.com/Psychman52OS/PantrLytics`.
-2) **Install**: Select “PantrLytics” and install.
-3) **Network mapping (critical for QR codes)**:
-   - Map a host port to container port `8099` (container always listens on 8099).
-   - Example: host `8099` → container `8099`. Whatever host port you map is the one you must use in `base_url`.
-4) **Configuration**:
-   - `base_url` (strongly recommended): Use a direct, reachable URL with the correct host and mapped port, e.g. `http://192.168.1.10:8099`. Avoid ingress URLs for QR codes. If you use a reverse proxy with HTTPS, use that URL instead (e.g. `https://your.domain:443`).
-   - `ipp_host` / `ipp_printer` (optional): IPP host:port and queue name for direct printing. If unset, print actions return PNG previews.
-   - `serial_prefix` (optional): Prefix for new serials/barcodes (default `USERconfigurable-`).
-   - `workers` (optional): Gunicorn workers (default 2).
-5) **Start** the add-on. Open via “Open Web UI” (ingress) or `http://<HA-host>:<mapped-port>/`.
-6) **Secure admin**: Default admin password is `password`. Go to Admin → “Admin password” and change it immediately.
-
-### QR codes and `base_url` explained (don’t skip)
-- The QR code encodes `base_url` + `/item/<id>`. If `base_url` is wrong, scans will fail (401s, timeouts, or blank pages).
-- Use the HA host’s LAN IP plus the mapped port: e.g., `http://192.168.1.10:8099`. Include the port every time.
-- If you front this with HTTPS (reverse proxy), set `https://your-domain:<port>` so the QR matches the TLS endpoint.
-- Ingress URLs (`/api/hassio_ingress/...`) need short-lived tokens and often fail when scanned; prefer a direct reachable address.
-- After changing `base_url`, **reprint labels** so the QR codes carry the new URL.
+Licencja: Tylko do użytku osobistego (niekomercyjnego). Zobacz LICENCJE.
 
 ---
 
-## Using the app (all pages and controls)
+## Instalacja dodatku (Home Assistant)
 
-### Home page (inventory list)
-- Search by name, serial, barcode, tags, notes, category, location, bin, unit, or dates.
-- Quick filters: categories, locations, bins, use-within, depleted reason, and show/hide depleted.
-- Columns: configurable in Admin → Main table columns (show/hide/reorder).
-- Quantity +/-: appears only for units marked **Adjustable** in Admin → Units. When off, buttons hide for that unit.
-
-### Items
-- **Create**: Click **New item**; fill name, category, location, bin, quantity, unit, condition, cook/use-by dates, use-within, tags, notes, and photos. Required fields are enforced per Admin settings.
-- **Edit**: Open item → Edit. Photos can be added/replaced; tags/fields updated.
-- **Deplete/Recover**: Mark depleted with reason (qty → 0). Recover restores quantity. Depleted list lives under “Depleted.”
-- **Delete**: Permanently remove item and photos.
-
-### Units (drives +/- buttons)
-- Admin → Units: add/edit/delete units, drag to reorder, toggle **Adjustable** to control +/- visibility.
-- Any unit already on items (e.g., grams) is auto-added to the list (non-adjustable by default) so you can toggle it.
-
-### Labels
-- Item page: **Preview Label** (PNG) or **Print Label** (with copy count). Multiple copies are one CUPS job.
-- QR code uses `base_url`. If scans fail, fix `base_url`/port and reprint.
-
-### Reports page
-- **Horizon**: 7/14/30/60/all days for expiry risk.
-- **KPIs**: Expired, ≤7d, ≤14d, ≤30d, ≤60d, total in view.
-- **Use-within compliance**: % of items within intended window.
-- **Aging waterfall**: Age distribution bars.
-- **Heatmap**: Category × Location counts for expiring items.
-- **Depletions**: Counts, avg days on hand, reasons (click to drill into items), recent depleted list.
-- **Upcoming risk (top 25)**: Soonest-to-expire items sorted by days remaining.
-
-### Admin sections (everything configurable)
-- **Main table columns**: Show/hide and reorder columns on the home page.
-- **Required fields**: Choose which fields are mandatory on new/edit.
-- **Theme**: Light/Dark toggle.
-- **App heading**: Custom text on the main page.
-- **Categories / Bins / Locations / Use Within**: Add, edit (modal), delete, drag to reorder. Renames update existing items.
-- **Units**: Add/edit/delete, reorder, toggle **Adjustable** (controls +/- buttons). Auto-captures any unit seen on items so you can manage it.
-- **Admin password**: Change from the default.
-
-### Backup, restore, and CSV
-- **Backup page**:
-  - Create zip backups (DB, photos, options, CSV export) and download.
-  - Restore from a zip created by the app.
-  - Delete all items/photos (irreversible).
-- **CSV export/import**:
-  - Export: choose fields and download.
-  - Import: headers must match export; missing serials auto-generate. Categories/bins/locations/units are upserted.
+1) **Dodaj repozytorium**: Nadzorca → Sklep z dodatkami → „Repozytoria” → `https://github.com/Psychman52OS/PantrLytics`.
+2) **Instalacja**: Wybierz „PantrLytics” i zainstaluj.
+3) **Mapowanie sieci (kluczowe dla kodów QR)**:
+- Zmapuj port hosta na port kontenera `8099` (kontener zawsze nasłuchuje na 8099).
+- Przykład: host `8099` → kontener `8099`. Niezależnie od tego, jaki port hosta mapujesz, musisz użyć go w `base_url`.
+4) **Konfiguracja**:
+- `base_url` (zalecane): Użyj bezpośredniego, osiągalnego adresu URL z poprawnym hostem i zmapowanym portem, np. `http://192.168.1.10:8099`. Unikaj adresów URL dla kodów QR. Jeśli używasz odwrotnego proxy z HTTPS, użyj tego adresu URL (np. `https://twoja.domena:443`).
+- `ipp_host` / `ipp_printer` (opcjonalnie): Host IPP:port i nazwa kolejki do drukowania bezpośredniego. Jeśli nieustawione, akcje drukowania zwracają podgląd PNG.
+- `serial_prefix` (opcjonalnie): Prefiks dla nowych numerów seryjnych/kodów kreskowych (domyślnie `USERconfigurable-`).
+- `workers` (opcjonalnie): Pracownicy Gunicorn (domyślnie 2).
+5) **Uruchom** dodatek. Otwórz przez „Open Web UI” (ingress) lub `http://<HA-host>:<mapowany-port>/`.
+6) **Bezpieczny administrator**: Domyślne hasło administratora to `password`. Przejdź do Admin → „Hasło administratora” i natychmiast je zmień.
+  
+### Wyjaśnienie kodów QR i `base_url` (nie pomijaj)
+- Kod QR koduje `base_url` + `/item/<id>`. Jeśli `base_url` jest błędny, skanowanie zakończy się niepowodzeniem (błąd 401, przekroczenie limitu czasu lub puste strony).
+- Użyj adresu IP hosta HA w sieci LAN oraz zmapowanego portu: np. `http://192.168.1.10:8099`. Zawsze uwzględniaj port.
+- Jeśli na początku używasz HTTPS (odwrotnego proxy), ustaw `https://twoja-domena:<port>`, aby kod QR pasował do punktu końcowego TLS.
+- Adresy URL przychodzące (`/api/hassio_ingress/...`) wymagają krótkotrwałych tokenów i często przechodzą niepowodzenie podczas skanowania; preferowany jest adres bezpośrednio osiągalny.
+- Po zmianie `base_url`, **ponownie wydrukuj etykiety**, aby kody QR zawierały nowy adres URL.
 
 ---
 
-## Printer setup (IPP/CUPS over local network)
+## Korzystanie z aplikacji (wszystkie strony i elementy sterujące)
 
-1) Share your printer via CUPS/IPP:
-   - Enable sharing: `cupsctl --remote-admin --remote-any --share-printers`.
-   - Add printer in CUPS (`http://<cups-host>:631/admin`) and print a test page.
-   - Note queue name and host:port (default 631).
-2) In add-on config:
-   - `ipp_host`: e.g., `192.168.1.50:631`
-   - `ipp_printer`: queue name, e.g., `DYMO_LabelWriter_450`
-3) Restart the add-on. Print from an item; IPP sends directly. If unreachable/unset, you get a PNG instead.
-4) Troubleshoot: verify LAN reachability, queue name, CUPS sharing/firewall, and check add-on logs for IPP errors.
+### Strona główna (lista zapasów)
+- Wyszukiwanie według nazwy, numeru seryjnego, kodu kreskowego, tagów, notatek, kategorii, lokalizacji, pojemnika, jednostki lub dat.
+- Szybkie filtry: kategorie, lokalizacje, pojemniki, zużycie w ciągu, przyczyna wyczerpania oraz pokaż/ukryj wyczerpane.
+- Kolumny: konfigurowalne w Administracja → Kolumny tabeli głównej (pokaż/ukryj/zmień kolejność).
+- Ilość +/-: wyświetlana tylko dla jednostek oznaczonych jako **Regulowane** w Administracja → Jednostki. Po wyłączeniu, przyciski dla danej jednostki są ukrywane.
 
----
+### Elementy
+- **Utwórz**: Kliknij **Nowy element**; wprowadź nazwę, kategorię, lokalizację, pojemnik, ilość, jednostkę, stan, datę przydatności do spożycia, termin przydatności do spożycia, tagi, notatki i zdjęcia. Pola wymagane są zgodnie z ustawieniami administratora.
+- **Edytuj**: Otwórz element → Edytuj. Można dodawać/zastępować zdjęcia; tagi/pola są aktualizowane.
+- **Wyczerp/Odzyskaj**: Zaznacz wyczerpany element z podaniem przyczyny (ilość → 0). Odzyskaj przywraca ilość. Lista wyczerpanych elementów znajduje się pod napisem „Wyczerpany”.
+- **Usuń**: Trwale usuń element i zdjęcia.
 
-## CSV import/export (Backup page)
+### Jednostki (obsługuje przyciski +/-)
+- Administracja → Jednostki: dodaj/edytuj/usuń jednostki, przeciągnij, aby zmienić kolejność, przełącz **Regulowane**, aby kontrolować +/- widoczność.
+- Każda jednostka już znajdująca się na przedmiotach (np. gramy) jest automatycznie dodawana do listy (domyślnie nie można jej zmienić), więc można ją przełączać.
 
-- Export selected fields to CSV.
-- Import expects matching headers. Missing serials auto-generate; categories/bins/locations/units are upserted if new.
-- Success message shows items added/skipped.
+### Etykiety
+- Strona elementu: **Podgląd etykiety** (PNG) lub **Drukuj etykietę** (z liczbą kopii). Wiele kopii to jedno zadanie CUPS.
+- Kod QR używa `base_url`. Jeśli skanowanie się nie powiedzie, popraw `base_url`/port i wydrukuj ponownie.
 
----
+### Strona raportów
+- **Horyzont**: 7/14/30/60/wszystkie dni dla ryzyka wygaśnięcia.
+- **Wskaźniki KPI**: Wygasłe, ≤7 dni, ≤14 dni, ≤30 dni, ≤60 dni, suma w widoku.
+- **Użycie w ramach zgodności**: % elementów w przewidzianym przedziale czasowym.
+- **Wodospad starzenia**: Słupki rozkładu wieku.
+- **Mapa cieplna**: Kategoria × Liczba lokalizacji dla elementów wygasających.
+- **Wyczerpania**: Liczba, średnia liczba dni w magazynie, powody (kliknij, aby przejść do szczegółów), lista ostatnio wyczerpanych zapasów.
+- **Nadchodzące ryzyko (25 najpopularniejszych)**: Najszybciej wygasające zapasy posortowane według liczby pozostałych dni.
+  
+### Sekcje administracyjne (wszystko konfigurowalne)
+- **Kolumny głównej tabeli**: Pokaż/ukryj i zmień kolejność kolumn na stronie głównej.
+- **Pola wymagane**: Wybierz, które pola są obowiązkowe przy tworzeniu/edycji.
+- **Motyw**: Przełączanie między trybem jasnym i ciemnym.
+- **Nagłówek aplikacji**: Własny tekst na stronie głównej.
+- **Kategorie / Pojemniki / Lokalizacje / Użycie w**: Dodawaj, edytuj (modalnie), usuwaj i przeciągaj, aby zmienić kolejność. Zmieniaj nazwy i aktualizuj istniejące elementy.
+- **Jednostki**: Dodawaj/edytuj/usuwaj, zmieniaj kolejność, przełączaj **Regulowane** (sterowanie przyciskami +/-). Automatycznie przechwytuje wszystkie jednostki widoczne przy elementach, aby można było nimi zarządzać.
+- **Hasło administratora**: Zmień hasło domyślne.
+  
+### Kopia zapasowa, przywracanie i CSV
+- **Strona kopii zapasowej**:
+- Twórz kopie zapasowe w formacie ZIP (baza danych, zdjęcia, opcje, eksport CSV) i pobieraj.
+- Przywracaj z pliku ZIP utworzonego przez aplikację.
+- Usuń wszystkie elementy/zdjęcia (nieodwracalne).
+- **Eksport/import CSV**:
+- Eksport: wybierz pola i pobierz.
+- Import: nagłówki muszą być zgodne z eksportem; brakujące numery seryjne są generowane automatycznie. Kategorie/pojemniki/lokalizacje/jednostki są wstawiane ponownie.
 
-## Local development (optional)
+--
+
+## Konfiguracja drukarki (IPP/CUPS przez sieć lokalną)
+
+1) Udostępnij drukarkę przez CUPS/IPP:
+- Włącz udostępnianie: `cupsctl --remote-admin --remote-any --share-printers`.
+- Dodaj drukarkę w CUPS (`http://<cups-host>:631/admin`) i wydrukuj stronę testową.
+- Zanotuj nazwę kolejki i port hosta (domyślnie 631).
+2) W konfiguracji dodatku:
+- `ipp_host`: np. `192.168.1.50:631`
+- `ipp_printer`: nazwa kolejki, np. `DYMO_LabelWriter_450`
+3) Uruchom ponownie dodatek. Wydrukuj z elementu; IPP wysyła bezpośrednio. Jeśli nieosiągalny/nieustawiony, otrzymasz plik PNG.
+4) Rozwiązywanie problemów: sprawdź dostępność sieci LAN, nazwę kolejki, współdzielenie/zaporę CUPS i sprawdź logi dodatków pod kątem błędów IPP.
+
+--
+
+## Import/eksport CSV (Strona zapasowa)
+
+- Eksport wybranych pól do pliku CSV.
+- Import oczekuje pasujących nagłówków. Brakujące numery seryjne są generowane automatycznie; kategorie/pojemniki/lokalizacje/jednostki są wstawiane ponownie, jeśli są nowe.
+- Komunikat o powodzeniu pokazuje dodane/pominięte elementy.
+
+--
+## Tworzenie lokalne (opcjonalnie)
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r app/requirements.txt
-export DATA_DIR="$(pwd)/data"   # optional: keep data in repo instead of /data
-./run.sh  # serves on http://localhost:8099
+export DATA_DIR="$(pwd)/data" # opcjonalnie: przechowuj dane w repozytorium zamiast w /data
+./run.sh # obsługuje http://localhost:8099
 ```

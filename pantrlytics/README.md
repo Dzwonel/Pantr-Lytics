@@ -1,20 +1,20 @@
-# My Inventory Labels — Home Assistant Add-on
+# Moje etykiety inwentarza — dodatek Home Assistant
 
-This directory contains a Home Assistant Supervisor add-on for the `PantrLytics` app.
+Ten katalog zawiera dodatek Home Assistant Supervisor dla aplikacji `PantrLytics`.
 
-Usage
-- Commit this `pantrlytics/` directory into your repository (root-level add-on).
-- In Home Assistant, add your repository URL under the Add-on Store → Repositories.
-- Install the add-on and start it. Because the add-on uses Ingress, open the add-on's Web UI from Home Assistant.
+Użycie
+- Dodaj ten katalog `pantrlytics/` do swojego repozytorium (dodatek na poziomie głównym).
+- W Home Assistant dodaj adres URL repozytorium w Sklepie z dodatkami → Repozytoria.
+- Zainstaluj dodatek i uruchom go. Ponieważ dodatek korzysta z Ingress, otwórz jego interfejs sieciowy z poziomu Home Assistant.
 
-Notes
-- The add-on expects the app to bind to `0.0.0.0` and to use port 5000 by default.
-- If you prefer not to let Supervisor build the image, build and push the image to a registry (e.g. GHCR) and reference the `image` key in `config.json`.
+Uwagi
+- Dodatek oczekuje, że aplikacja połączy się z `0.0.0.0` i domyślnie użyje portu 5000.
+- Jeśli nie chcesz, aby Supervisor zbudował obraz, zbuduj i prześlij obraz do rejestru (np. GHCR) i odwołaj się do klucza `image` w pliku `config.json`.
 
-Local testing
+Testowanie lokalne
 
 ```bash
 docker build -t pantrlytics:local .
 docker run --rm -p 5000:5000 pantrlytics:local
-# then visit http://localhost:5000
+# następnie odwiedź http://localhost:5000
 ```

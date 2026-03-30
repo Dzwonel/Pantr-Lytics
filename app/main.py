@@ -347,21 +347,21 @@ class AppSetting(SQLModel, table=True):
 # Display preferences (main table columns)
 # -----------------------------
 DISPLAYABLE_FIELDS = [
-    {"key": "location", "label": "Location", "sort_type": "text"},
+    {"key": "location", "label": "Lokalizacja", "sort_type": "text"},
     {"key": "bin_number", "label": "Bin", "sort_type": "text"},
-    {"key": "category", "label": "Category", "sort_type": "text"},
-    {"key": "quantity", "label": "QTY", "sort_type": "number"},
+    {"key": "category", "label": "Kategoria", "sort_type": "text"},
+    {"key": "quantity", "label": "Ilość", "sort_type": "number"},
     {"key": "unit", "label": "Unit", "sort_type": "text"},
     {"key": "condition", "label": "Condition", "sort_type": "text"},
     {"key": "cook_date", "label": "Cook date", "sort_type": "text"},
     {"key": "use_by_date", "label": "Use-by date", "sort_type": "text"},
     {"key": "use_within", "label": "Use within", "sort_type": "text"},
-    {"key": "tags", "label": "Tags", "sort_type": "text"},
+    {"key": "tags", "label": "Tag", "sort_type": "text"},
     {"key": "last_audit_date", "label": "Last audit", "sort_type": "text"},
     {"key": "barcode", "label": "Barcode", "sort_type": "text"},
-    {"key": "serial_number", "label": "Serial number", "sort_type": "text"},
+    {"key": "serial_number", "label": "Numer seryjny", "sort_type": "text"},
     {"key": "second_serial_number", "label": "Sub item tracking ID", "sort_type": "text"},
-    {"key": "notes", "label": "Notes", "sort_type": "text"},
+    {"key": "notes", "label": "Notatki", "sort_type": "text"},
 ]
 
 # Default columns shown on the main inventory table (after Name)

@@ -8,7 +8,7 @@ Licencja: Tylko do użytku osobistego (niekomercyjnego). Zobacz LICENCJE.
 
 ## Instalacja dodatku (Home Assistant)
 
-1) **Dodaj repozytorium**: Nadzorca → Sklep z dodatkami → „Repozytoria” → `https://github.com/Psychman52OS/PantrLytics`.
+1) **Dodaj repozytorium**: Nadzorca → Sklep z dodatkami → „Repozytoria” → `https://github.com/Dzwonel/Pantr-Lytics`.
 2) **Instalacja**: Wybierz „PantrLytics” i zainstaluj.
 3) **Mapowanie sieci (kluczowe dla kodów QR)**:
 - Zmapuj port hosta na port kontenera `8099` (kontener zawsze nasłuchuje na 8099).

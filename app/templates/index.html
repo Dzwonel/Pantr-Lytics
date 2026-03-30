@@ -10,7 +10,7 @@
   <div class="page-header">
     <div class="page-header-text">
       <h1 class="page-title">{{ app_heading }}</h1>
-      <p class="page-subtitle">Search, review, and print labels for everything in the bunker.</p>
+      <p class="page-subtitle">Wyszukaj, przejrzyj i wydrukuj etykiety dla wszystkiego, co znajduje się w inventarzu.</p>
     </div>
   </div>
 
@@ -19,8 +19,8 @@
         <input type="text" name="q" class="filter-input search-input"
                placeholder="Search name, serial, tags, location, bin…"
                value="{{ q }}" list="search-suggestions" autocomplete="off">
-        <button class="btn btn-primary" type="submit">Search</button>
-        <button class="btn btn-secondary" type="button" id="adv-filter-toggle" aria-expanded="false">⚙ Filters</button>
+        <button class="btn btn-primary" type="submit">Szukaj</button>
+        <button class="btn btn-secondary" type="button" id="adv-filter-toggle" aria-expanded="false">⚙ Filtry</button>
         <datalist id="search-suggestions">
           {% for s in search_suggestions %}<option value="{{ s }}">{% endfor %}
         </datalist>
@@ -28,40 +28,40 @@
     <div id="adv-filters-body" hidden>
       <div class="filters-row">
           <div class="filter-group">
-              <label>Category</label>
+              <label>Kategorie</label>
               <select name="category" class="filter-input">
                   <option value="">(Any)</option>
                   {% for c in cats %}<option value="{{ c }}" {% if category == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
               </select>
           </div>
           <div class="filter-group">
-              <label>Location</label>
+              <label>Lokalizacja</label>
               <select name="location" class="filter-input">
                   <option value="">(Any)</option>
                   {% for l in locations %}<option value="{{ l }}" {% if location == l %}selected{% endif %}>{{ l }}</option>{% endfor %}
               </select>
           </div>
           <div class="filter-group">
-              <label>Bin</label>
+              <label>Pojemnik</label>
               <select name="bin_number" class="filter-input">
                   <option value="">(Any)</option>
                   {% for b in bins %}<option value="{{ b }}" {% if bin_number == b %}selected{% endif %}>{{ b }}</option>{% endfor %}
               </select>
           </div>
           <div class="filter-group">
-              <label>Cook date</label>
+              <label>Data ugotowania</label>
               <input type="date" name="cook_date" class="filter-input" value="{{ cook_date }}">
           </div>
           <div class="filter-group">
-              <label>Use-by date</label>
+              <label>Data przydatności do spożycia</label>
               <input type="date" name="use_by_date" class="filter-input" value="{{ use_by_date }}">
           </div>
           <div class="filter-group">
-              <label>Tags (contains)</label>
+              <label>Tagi (posiada)</label>
               <input type="text" name="tags" class="filter-input" placeholder="e.g. beef, freezer" value="{{ tags }}">
           </div>
           <div class="filter-group">
-            <label>Depletion reason</label>
+            <label>Powód wyczerpania</label>
             <select name="depleted_reason" class="filter-input">
               <option value="">(Any)</option>
               {% for r in DEPLETION_REASONS %}<option value="{{ r }}" {% if request.query_params.get('depleted_reason') == r %}selected{% endif %}>{{ r }}</option>{% endfor %}
@@ -71,23 +71,23 @@
             <label>&nbsp;</label>
             <label style="display:flex; align-items:center; gap:6px; font-size:13px;">
               <input type="checkbox" name="include_depleted" value="1" {% if include_depleted %}checked{% endif %}>
-              Include depleted
+              Uwzględnij wyczerpane
             </label>
           </div>
       </div>
       <div class="filters-actions">
-          <button class="btn-primary" type="submit">Apply filters</button>
-          <a class="btn-clear-filters" href="{{ url_for('index') }}">Clear</a>
+          <button class="btn-primary" type="submit">Aplikuj filtry</button>
+          <a class="btn-clear-filters" href="{{ url_for('index') }}">Wyczyść</a>
       </div>
     </div>
 </form>
 
 {# View toggle bar #}
 <div class="view-toggle-bar">
-  <button class="btn btn-small" id="chips-toggle" title="Show/hide quick filters">⊟ Filters</button>
+  <button class="btn btn-small" id="chips-toggle" title="Show/hide quick filters">⊟ Filtry</button>
   <div class="view-toggle-btns">
-    <button class="btn btn-small" data-view-toggle="list" title="List view">☰ List</button>
-    <button class="btn btn-small" data-view-toggle="grid" title="Grid view">⊞ Grid</button>
+    <button class="btn btn-small" data-view-toggle="list" title="List view">☰ Lista</button>
+    <button class="btn btn-small" data-view-toggle="grid" title="Grid view">⊞ Siatka</button>
   </div>
 </div>
 
@@ -98,30 +98,30 @@
 
 {# Deplete dialog #}
 {% set reasons_list = DEPLETION_REASONS if DEPLETION_REASONS is defined else [
-  "Consumed/Used", "Discarded (expired/spoiled)", "Discarded (damaged)",
-  "Donated/Returned", "Lost/Missing", "Restocked/Replaced (new batch)", "Other"
+  „Zużyte/Użyte”, „Wyrzucone (przeterminowane/zepsute)”, „Wyrzucone (uszkodzone)”,
+„Przekazane/Zwrócone”, „Zgubione/Zaginione”, „Uzupełnione/Wymienione (nowa partia)”, „Inne”
 ] %}
 <dialog id="deplete-dialog" class="modal-card">
-  <h3 style="margin:0 0 12px 0;">Mark as depleted</h3>
+  <h3 style="margin:0 0 12px 0;">Zaznacz jako wyczerpane</h3>
   <div class="field" style="margin-bottom:10px;">
-    <label class="kv-label" for="deplete-date">Date &amp; time depleted</label>
+    <label class="kv-label" for="deplete-date">Date &amp; czas wyczerpania</label>
     <input id="deplete-date" class="input" type="datetime-local" style="width:100%;">
   </div>
   <div class="field" style="margin-bottom:10px;">
-    <label class="kv-label" for="deplete-reason">Reason</label>
+    <label class="kv-label" for="deplete-reason">Powód</label>
     <select id="deplete-reason" class="input" style="width:100%;">
-      <option value="">(None)</option>
+      <option value="">(Brak)</option>
       {% for r in reasons_list %}<option value="{{ r }}">{{ r }}</option>{% endfor %}
-      <option value="Other">Other</option>
+      <option value="Other">Inne</option>
     </select>
   </div>
   <div class="field" data-other-wrap style="display:none; margin-bottom:10px;">
-    <label class="kv-label" for="deplete-reason-other">Other reason</label>
+    <label class="kv-label" for="deplete-reason-other">Inne powody</label>
     <input id="deplete-reason-other" class="input" type="text" placeholder="Enter reason">
   </div>
   <div style="display:flex; gap:8px; justify-content:flex-end;">
-    <button class="btn btn-secondary" type="button" id="deplete-cancel">Cancel</button>
-    <button class="btn btn-danger" type="button" id="deplete-confirm">Mark Depleted</button>
+    <button class="btn btn-secondary" type="button" id="deplete-cancel">Anuluj</button>
+    <button class="btn btn-danger" type="button" id="deplete-confirm">Zaznacz wyczerpane</button>
   </div>
 </dialog>
 

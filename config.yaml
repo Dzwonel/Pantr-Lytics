@@ -2,7 +2,7 @@ name: PantrLytics - PL
 version: 2026.03.30
 url: https://github.com/Dzwonel/Pantr-Lytics
 changelog: https://github.com/Dzwonel/Pantr-Lytics/blob/main/CHANGELOG.md
-slug: pantrlytics - PL
+slug: pantr-lytics
 description: Baza danych z generowaniem etykiet na żądanie i drukowaniem IPP
 arch:
   - aarch64
